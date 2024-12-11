@@ -2,7 +2,8 @@
     "name": "bryanjoyarubio/uf2work-shop",
     "autoload": {
         "psr-4": {
-            "Bryanjoyarubio\\Uf2workShop\\": "src/"
+            "Bryanjoyarubio\\Uf2workShop\\": "src/",
+            "App\\": "src/"
         }
     },
     "authors": [
