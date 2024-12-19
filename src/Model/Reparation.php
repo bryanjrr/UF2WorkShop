@@ -12,10 +12,12 @@ class Reparation
 
     private $registerDate;
 
+    private $uuid;
     private $license_plate;
 
-    public function __construct($idReparation, $nameWorkshop, $registerDate, $license_plate)
+    public function __construct($uuid, $idReparation, $nameWorkshop, $registerDate, $license_plate)
     {
+        $this->uuid = $uuid;
         $this->idReparation = $idReparation;
         $this->nameWorkshop = $nameWorkshop;
         $this->registerDate = $registerDate;
@@ -90,5 +92,13 @@ class Reparation
     public function getIdReparation()
     {
         return $this->idReparation;
+    }
+
+    /**
+     * Get the value of uuid
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
     }
 }

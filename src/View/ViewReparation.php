@@ -12,7 +12,7 @@ if (isset($_GET['puesto'])) {
 ?>
     <link rel="stylesheet" href="../../public/styles.css">
     <h2>Welcome <?php echo $_SESSION['puesto1'] ?> </h2>
-    <form action="../Controller/control" method="GET">
+    <form action="../Controller/controllerReparation.php" method="GET">
         <input type="text" name="idReparacion" placeholder="Introduce el id de la Reparacion..">
         <input name="enviar" type="submit" value="enviar">
     </form>
@@ -24,29 +24,29 @@ if (isset($_GET['puesto'])) {
     ?>
             <h2 class="titulo">Insertar una Reparacion</h2>
             <div class=contenedorRegistro>
-            <form action="../../src/Controller/controllerReparation.php">
-                <label>
-                    Id Workshop:
-                </label>
-                <input type=number name=idWorkshop>
+                <form action="../Controller/controllerReparation.php" method="POST">
+                    <label>
+                        Id Workshop:
+                    </label>
+                    <input type=number name=idWorkshop pattern="^\d{4,4}$" required>
 
-                <label>
-                    Nombre WorkShop:
-                </label>
-                <input type=text name=nombreWorkshop>
+                    <label>
+                        Nombre WorkShop:
+                    </label>
+                    <input type=text name=nombreWorkshop required>
 
 
-                <label>
-                    Fecha de Registro:
-                </label>
-                <input type=text name=fechaRegistro>
+                    <label>
+                        Fecha de Registro:
+                    </label>
+                    <input type=date name=fechaRegistro required>
 
-                <label>
-                    Matricula:
-                </label>
-                <input type=text name=matricula>
+                    <label>
+                        Matricula:
+                    </label>
+                    <input type=text name=matricula pattern="^\d{4}-[A-Z]{3}$" required>
 
-                <input type="submit" value="Registrar" value="Registrar">
+                    <input type="submit" value="Registrar" value="Registrar">
             </div>
             </form>
 
@@ -64,15 +64,16 @@ if (isset($_GET['puesto'])) {
 class ViewReparation
 {
 
-    public function render(Reparation $reparacion)
+    public function render(Reparation $reparacion, String $mensaje)
     {
         ?>
         <link rel="stylesheet" href="../../public/styles.css">
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-        <h2 class="mensaje">Vehiculo Encontrado <ion-icon class="icono" name="car-sport-sharp"></ion-icon></h2>
+        <h2 class="mensaje"><?php echo $mensaje ?><ion-icon class="icono" name="car-sport-sharp"></ion-icon></h2>
         <table>
             <tr>
+                <th>UUID</th>
                 <th>ID</th>
                 <th>Name Workshop</th>
                 <th>Register Date</th>
@@ -80,6 +81,7 @@ class ViewReparation
                 <th>Photo Damaged Vehicle</th>
             </tr>
             <tr>
+                <td><?php echo $reparacion->getUuid();  ?></td>
                 <td><?php echo $reparacion->getIdReparation();  ?></td>
                 <td><?php echo $reparacion->getNameWorkshop(); ?></td>
                 <td><?php echo $reparacion->getRegisterDate();  ?></td>
