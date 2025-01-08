@@ -46,6 +46,13 @@ if (isset($_GET['puesto'])) {
                     </label>
                     <input type=text name=matricula pattern="^\d{4}-[A-Z]{3}$" required>
 
+                    <br>
+                    
+                    <input type="file" name="imageFile">
+                    <br>
+                    <br>
+
+
                     <input type="submit" value="Registrar" value="Registrar">
             </div>
             </form>

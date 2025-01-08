@@ -56,7 +56,7 @@ class ServiceReparation
         }
 
         while ($row = $result->fetch_assoc()) {
-            $reparation = new Reparation($row["uuid"], $row["id"], $row["Name_workshop"], $row["Register_date"], $row["License_plate"]);
+            $reparation = new Reparation($row["uuid"], $row["id"], $row["Name_workshop"], $row["Register_date"], $row["License_plate"], $row["imagen"]);
         }
 
         return $reparation;
@@ -68,7 +68,7 @@ class ServiceReparation
         return $uuid;
     }
 
-    public function insertReparation($idWorkshop, $nombre, $fechaRegistro, $matricula)
+    public function insertReparation($idWorkshop, $nombre, $fechaRegistro, $matricula, $imagen)
     {
 
         $log = new Logger("LogWorkerDB");
@@ -78,8 +78,22 @@ class ServiceReparation
 
         $uuid = $this->generateUUID();
 
-        $sql_query = "INSERT INTO `workshop`(`uuid`, `id`, `Name_workshop`, `Register_date`, `License_plate`) VALUES ('$uuid', '$idWorkshop', '$nombre', '$fechaRegistro', '$matricula')";
+        $archivoRecogido =  $_FILES['imageFile'];
 
+        $managerImage = new \Intervention\Image\ImageManager();
+
+        $imageObject = $managerImage->make($archivoRecogido);
+
+        $imageObject->text($idWorkshop . $matricula, 0, 0, function ($imagen) {
+            $imagen->color('#fdf6e3');
+            $imagen->size(28);
+            $imagen->align('center');
+            $imagen->valign('top');
+        });
+
+
+
+        $sql_query = "INSERT INTO `workshop`(`uuid`, `id`, `Name_workshop`, `Register_date`, `License_plate`, `imagen`) VALUES ('$uuid', '$idWorkshop', '$nombre', '$fechaRegistro', '$matricula', '$imagen')";
         try {
             $mysqli->query($sql_query);
             $log->info("Se ha realizado el INSERT Correctamente!");
@@ -88,7 +102,7 @@ class ServiceReparation
         }
 
 
-        $reparation = new Reparation($uuid, $idWorkshop, $nombre,  $fechaRegistro, $matricula);
+        $reparation = new Reparation($uuid, $idWorkshop, $nombre,  $fechaRegistro, $matricula, $imagen);
 
         return $reparation;
     }

@@ -15,13 +15,16 @@ class Reparation
     private $uuid;
     private $license_plate;
 
-    public function __construct($uuid, $idReparation, $nameWorkshop, $registerDate, $license_plate)
+    private $imagen;
+
+    public function __construct($uuid, $idReparation, $nameWorkshop, $registerDate, $license_plate, $imagen)
     {
         $this->uuid = $uuid;
         $this->idReparation = $idReparation;
         $this->nameWorkshop = $nameWorkshop;
         $this->registerDate = $registerDate;
         $this->license_plate = $license_plate;
+        $this->imagen = $imagen;
     }
 
 
