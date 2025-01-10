@@ -93,7 +93,7 @@ class ViewReparation
                 <td><?php echo $reparacion->getNameWorkshop(); ?></td>
                 <td><?php echo $reparacion->getRegisterDate();  ?></td>
                 <td><?php echo $reparacion->getLicense_plate();  ?></td>
-                <td><img src="data-image/jpg;base64, <?php base64_encode($reparacion->getImagen())?> set="">?></td>
+                <td><img src="data-image/jpg;base64, <?php base64_encode($reparacion->getImagen()) ?> set="">?></td>
             </tr>
         </table>
 
