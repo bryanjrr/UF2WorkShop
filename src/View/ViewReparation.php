@@ -24,7 +24,7 @@ if (isset($_GET['puesto'])) {
     ?>
             <h2 class="titulo">Insertar una Reparacion</h2>
             <div class=contenedorRegistro>
-                <form action="../Controller/controllerReparation.php" method="POST">
+                <form action="../Controller/controllerReparation.php" method="POST" enctype="multipart/form-data">
                     <label>
                         Id Workshop:
                     </label>
@@ -47,7 +47,7 @@ if (isset($_GET['puesto'])) {
                     <input type=text name=matricula pattern="^\d{4}-[A-Z]{3}$" required>
 
                     <br>
-                    
+
                     <input type="file" name="imageFile">
                     <br>
                     <br>
@@ -93,7 +93,7 @@ class ViewReparation
                 <td><?php echo $reparacion->getNameWorkshop(); ?></td>
                 <td><?php echo $reparacion->getRegisterDate();  ?></td>
                 <td><?php echo $reparacion->getLicense_plate();  ?></td>
-                <td></td>
+                <td><img src="data-image/jpg;base64, <?php base64_encode($reparacion->getImagen())?> set="">?></td>
             </tr>
         </table>
 

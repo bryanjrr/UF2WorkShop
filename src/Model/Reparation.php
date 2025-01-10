@@ -104,4 +104,24 @@ class Reparation
     {
         return $this->uuid;
     }
+
+    /**
+     * Get the value of imagen
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    /**
+     * Set the value of imagen
+     *
+     * @return  self
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+
+        return $this;
+    }
 }

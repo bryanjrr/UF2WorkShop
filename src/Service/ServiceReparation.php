@@ -68,7 +68,7 @@ class ServiceReparation
         return $uuid;
     }
 
-    public function insertReparation($idWorkshop, $nombre, $fechaRegistro, $matricula, $imagen)
+    public function insertReparation($idWorkshop, $nombre, $fechaRegistro, $matricula)
     {
 
         $log = new Logger("LogWorkerDB");
@@ -78,11 +78,11 @@ class ServiceReparation
 
         $uuid = $this->generateUUID();
 
-        $archivoRecogido =  $_FILES['imageFile'];
-
         $managerImage = new \Intervention\Image\ImageManager();
 
-        $imageObject = $managerImage->make($archivoRecogido);
+
+
+        $imageObject = $managerImage->make($_FILES['imageFile']["tmp_name"]);
 
         $imageObject->text($idWorkshop . $matricula, 0, 0, function ($imagen) {
             $imagen->color('#fdf6e3');
@@ -91,9 +91,10 @@ class ServiceReparation
             $imagen->valign('top');
         });
 
+        var_dump($imageObject);
 
+        $sql_query = "INSERT INTO `workshop`(`uuid`, `id`, `Name_workshop`, `Register_date`, `License_plate`, `imagen`) VALUES ('$uuid', '$idWorkshop', '$nombre', '$fechaRegistro', '$matricula', '$imageObject')";
 
-        $sql_query = "INSERT INTO `workshop`(`uuid`, `id`, `Name_workshop`, `Register_date`, `License_plate`, `imagen`) VALUES ('$uuid', '$idWorkshop', '$nombre', '$fechaRegistro', '$matricula', '$imagen')";
         try {
             $mysqli->query($sql_query);
             $log->info("Se ha realizado el INSERT Correctamente!");
@@ -102,7 +103,7 @@ class ServiceReparation
         }
 
 
-        $reparation = new Reparation($uuid, $idWorkshop, $nombre,  $fechaRegistro, $matricula, $imagen);
+        $reparation = new Reparation($uuid, $idWorkshop, $nombre,  $fechaRegistro, $matricula, $imageObject);
 
         return $reparation;
     }
