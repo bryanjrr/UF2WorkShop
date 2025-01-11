@@ -36,7 +36,6 @@ class controllerReparation
         session_start();
 
         /* Informacion Reparacion */
-        echo "Imagen1" . $_FILES['imageFile']["tmp_name"];
         $service = new ServiceReparation();
         $reparation = $service->insertReparation($_POST['idWorkshop'], $_POST['nombreWorkshop'], $_POST['fechaRegistro'], $_POST['matricula']);
         $view = new ViewReparation();

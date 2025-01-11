@@ -19,7 +19,7 @@ class ServiceReparation
 {
 
 
-    public function connect(): mysqli
+    public function connect()
     {
         $log = new Logger("LogWorkerDB");
         $log->pushHandler(new StreamHandler("../logs/WorkerDB.log", Level::Info));
@@ -80,20 +80,29 @@ class ServiceReparation
 
         $managerImage = new \Intervention\Image\ImageManager();
 
+        $imageObject = $managerImage->make(data: $_FILES['imageFile']["tmp_name"]);
 
+        echo "<b>" . __LINE__ . "</b>";
 
-        $imageObject = $managerImage->make($_FILES['imageFile']["tmp_name"]);
-
-        $imageObject->text($idWorkshop . $matricula, 0, 0, function ($imagen) {
+        $imageObject->text($uuid . $matricula, 0, 0, function ($imagen) {
             $imagen->color('#fdf6e3');
             $imagen->size(28);
             $imagen->align('center');
             $imagen->valign('top');
         });
 
+        echo "<b>" . __LINE__ . "</b>";
+
         var_dump($imageObject);
 
-        $sql_query = "INSERT INTO `workshop`(`uuid`, `id`, `Name_workshop`, `Register_date`, `License_plate`, `imagen`) VALUES ('$uuid', '$idWorkshop', '$nombre', '$fechaRegistro', '$matricula', '$imageObject')";
+        echo "<b>" . __LINE__ . "</b>";
+
+        echo "<br><br><br>";
+
+        $imageObject->save("../output/" . $idWorkshop . "-" . $_FILES['imageFile']["name"]);
+        echo "<b>" . __LINE__ . "</b>";
+
+        $sql_query = "INSERT INTO `workshop`(`uuid`, `id`, `Name_workshop`, `Register_date`, `License_plate`, `imagen`) VALUES ('$uuid', '$idWorkshop', '$nombre', '$fechaRegistro', '$imageObject')";
 
         try {
             $mysqli->query($sql_query);
@@ -103,8 +112,9 @@ class ServiceReparation
         }
 
 
-        $reparation = new Reparation($uuid, $idWorkshop, $nombre,  $fechaRegistro, $matricula, $imageObject);
+        $reparation = new Reparation($uuid, $idWorkshop, $nombre, $fechaRegistro, $matricula, $imageObject);
 
         return $reparation;
+
     }
 }
