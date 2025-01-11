@@ -9,7 +9,7 @@ use App\Model\Reparation;
 if (isset($_GET['puesto'])) {
     session_start();
     $_SESSION['puesto1'] = $_GET['puesto'];
-?>
+    ?>
     <link rel="stylesheet" href="../../public/styles.css">
     <h2>Welcome <?php echo $_SESSION['puesto1'] ?> </h2>
     <form action="../Controller/controllerReparation.php" method="GET">
@@ -21,7 +21,7 @@ if (isset($_GET['puesto'])) {
     <?php
     switch ($_SESSION['puesto1']) {
         case "employer":
-    ?>
+            ?>
             <h2 class="titulo">Insertar una Reparacion</h2>
             <div class=contenedorRegistro>
                 <form action="../Controller/controllerReparation.php" method="POST" enctype="multipart/form-data">
@@ -62,7 +62,7 @@ if (isset($_GET['puesto'])) {
 
             </html>
 
-        <?php
+            <?php
 
             break;
     }
@@ -71,7 +71,7 @@ if (isset($_GET['puesto'])) {
 class ViewReparation
 {
 
-    public function render(Reparation $reparacion, String $mensaje)
+    public function render(Reparation $reparacion, string $mensaje)
     {
         ?>
         <link rel="stylesheet" href="../../public/styles.css">
@@ -88,18 +88,18 @@ class ViewReparation
                 <th>Photo Damaged Vehicle</th>
             </tr>
             <tr>
-                <td><?php echo $reparacion->getUuid();  ?></td>
-                <td><?php echo $reparacion->getIdReparation();  ?></td>
+                <td><?php echo $reparacion->getUuid(); ?></td>
+                <td><?php echo $reparacion->getIdReparation(); ?></td>
                 <td><?php echo $reparacion->getNameWorkshop(); ?></td>
-                <td><?php echo $reparacion->getRegisterDate();  ?></td>
-                <td><?php echo $reparacion->getLicense_plate();  ?></td>
-                <td><img src="data-image/jpg;base64, <?php base64_encode($reparacion->getImagen()) ?> set="">?></td>
+                <td><?php echo $reparacion->getRegisterDate(); ?></td>
+                <td><?php echo $reparacion->getLicense_plate(); ?></td>
+                <td><img width="300" src="data:image/jpg;base64,<?php echo base64_encode($reparacion->getImagen()); ?>"></td>
             </tr>
         </table>
 
 
 
-<?php
+        <?php
 
 
 

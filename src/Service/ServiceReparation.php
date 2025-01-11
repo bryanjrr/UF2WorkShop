@@ -46,7 +46,7 @@ class ServiceReparation
         $mysqli = $this->connect();
 
 
-        $sql_query = "SELECT * FROM workshop WHERE uuid =" . $uuid;
+        $sql_query = "SELECT * FROM `workshop` WHERE uuid =" . $uuid;
 
         try {
             $result = $mysqli->query($sql_query);
@@ -57,6 +57,8 @@ class ServiceReparation
 
         while ($row = $result->fetch_assoc()) {
             $reparation = new Reparation($row["uuid"], $row["id"], $row["Name_workshop"], $row["Register_date"], $row["License_plate"], $row["imagen"]);
+
+            var_dump($reparation);
         }
 
         return $reparation;
@@ -84,33 +86,29 @@ class ServiceReparation
 
         echo "<b>" . __LINE__ . "</b>";
 
-        $imageObject->text($uuid . $matricula, 0, 0, function ($imagen) {
-            $imagen->color('#fdf6e3');
-            $imagen->size(28);
+        $imageObject->resize(300, 300);
+
+        echo $uuid;
+        $imageObject->text($uuid . $matricula, 120, 5, function ($imagen) {
+            $imagen->color('#0838ea');
+            $imagen->size(30);
             $imagen->align('center');
             $imagen->valign('top');
         });
 
-        echo "<b>" . __LINE__ . "</b>";
-
-        var_dump($imageObject);
-
-        echo "<b>" . __LINE__ . "</b>";
-
-        echo "<br><br><br>";
-
         $imageObject->save("../output/" . $idWorkshop . "-" . $_FILES['imageFile']["name"]);
-        echo "<b>" . __LINE__ . "</b>";
 
-        $sql_query = "INSERT INTO `workshop`(`uuid`, `id`, `Name_workshop`, `Register_date`, `License_plate`, `imagen`) VALUES ('$uuid', '$idWorkshop', '$nombre', '$fechaRegistro', '$imageObject')";
+        $imagenBinario = file_get_contents("../output/" . $idWorkshop . "-" . $_FILES['imageFile']["name"]);
+        $imagenMySql = $mysqli->real_escape_string($imagenBinario);
+
+        $sql_query = "INSERT INTO `workshop`(`uuid`, `id`, `Name_workshop`, `Register_date`, `License_plate`, `imagen`) VALUES ('$uuid', '$idWorkshop', '$nombre', '$fechaRegistro','$matricula', '$imagenMySql')";
 
         try {
             $mysqli->query($sql_query);
             $log->info("Se ha realizado el INSERT Correctamente!");
         } catch (mysqli_sql_exception $e) {
-            $log->error("Error al realizar la consulta (INSERT) en la BBDD");
+            $log->error("Error al realizar la consulta (INSERT) en la BBDD: " . $e->getMessage());
         }
-
 
         $reparation = new Reparation($uuid, $idWorkshop, $nombre, $fechaRegistro, $matricula, $imageObject);
 
