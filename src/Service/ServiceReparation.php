@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Exception;
 use mysqli;
 
 use App\Model\Reparation;
@@ -42,27 +43,45 @@ class ServiceReparation
         $log = new Logger("LogWorkerDB");
         $log->pushHandler(new StreamHandler("../logs/WorkerDB.log", Level::Info));
 
-
         $mysqli = $this->connect();
+    
+        $sqlCount = "SELECT COUNT(*) as `total` FROM `workshop`  WHERE `uuid` = '$uuid'";
 
+        $resultCount = $mysqli->query($sqlCount);
 
-        $sql_query = "SELECT * FROM `workshop` WHERE uuid =" . $uuid;
+        $data = $resultCount->fetch_assoc();
 
-        try {
-            $result = $mysqli->query($sql_query);
-            $log->info("Se ha realizado el SELECT Correctamente!");
-        } catch (mysqli_sql_exception $e) {
-            $log->error("Error al realizar la consulta (SELECT) en la BBDD");
+        if ($data["total"] == 0) {
+            throw new Exception("No se ha encontrado un vehiculo con ese UUID!");
+        } else {
+            $sql_query = "SELECT * FROM `workshop` WHERE `uuid` = '$uuid'";
+
+            try {
+                $result = $mysqli->query($sql_query);
+                $log->info("Se ha realizado el SELECT Correctamente!");
+            } catch (mysqli_sql_exception $e) {
+                $log->error("Error al realizar la consulta (SELECT) en la BBDD" . $e->getMessage());
+            }
+            while ($row = $result->fetch_assoc()) {
+
+                $managerImage = new \Intervention\Image\ImageManager();
+                $imageObject = $managerImage->make($row["imagen"]);
+
+                if ($rol == "client") {
+                    $imageObject->pixelate(5);
+                }
+
+                $imageObject->resize(300, 300);
+
+                $imageBinary = (string) $imageObject->encode();
+
+                $reparation = new Reparation($row["uuid"], $row["id"], $row["Name_workshop"], $row["Register_date"], $row["License_plate"], $imageBinary);
+            }
+
+            return $reparation;
         }
-
-        while ($row = $result->fetch_assoc()) {
-            $reparation = new Reparation($row["uuid"], $row["id"], $row["Name_workshop"], $row["Register_date"], $row["License_plate"], $row["imagen"]);
-
-            var_dump($reparation);
-        }
-
-        return $reparation;
     }
+
 
     public function generateUUID()
     {
@@ -83,8 +102,6 @@ class ServiceReparation
         $managerImage = new \Intervention\Image\ImageManager();
 
         $imageObject = $managerImage->make(data: $_FILES['imageFile']["tmp_name"]);
-
-        echo "<b>" . __LINE__ . "</b>";
 
         $imageObject->resize(300, 300);
 

@@ -12,9 +12,11 @@ if (isset($_GET['puesto'])) {
     ?>
     <link rel="stylesheet" href="../../public/styles.css">
     <h2>Welcome <?php echo $_SESSION['puesto1'] ?> </h2>
-    <form action="../Controller/controllerReparation.php" method="GET">
-        <input type="text" name="idReparacion" placeholder="Introduce el id de la Reparacion..">
-        <input name="enviar" type="submit" value="enviar">
+    <div class=contenedorRegistro>
+        <form action="../Controller/controllerReparation.php" method="GET">
+            <input type="text" name="idReparacion" placeholder="Introduce el id de la Reparacion..">
+            <input name="enviar" type="submit" value="enviar">
+    </div>  
     </form>
 
 
@@ -96,7 +98,7 @@ class ViewReparation
                 <td><img width="300" src="data:image/jpg;base64,<?php echo base64_encode($reparacion->getImagen()); ?>"></td>
             </tr>
         </table>
-
+        
 
 
         <?php

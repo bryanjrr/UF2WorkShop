@@ -5,21 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkShop</title>
+    <link rel="stylesheet" href="../public/styles.css">
 </head>
 
 <body>
-    <h1> WorkShop UF2 </h1>
-    <form action="../src/View/ViewReparation.php" method="GET">
-        <select name="puesto" id="">
-            <option value="employer">Employer</option>
-            <option value="client">Client</option>
-        </select>
+    <div class="container">
+        <h1>WorkShop UF2</h1>
+        <form action="../src/View/ViewReparation.php" method="GET">
+            <select name="puesto" id="puesto">
+                <option value="employer">Employer</option>
+                <option value="client">Client</option>
+            </select>
 
-        <input type="submit" value="enviar" name="enviar">
-    </form>
-
-
-
+            <input type="submit" value="Enviar" name="enviar">
+        </form>
+    </div>
 </body>
 
 </html>
