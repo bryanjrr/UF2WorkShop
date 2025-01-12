@@ -41,8 +41,14 @@ class controllerReparation
         session_start();
         /* Informacion Reparacion */
         $service = new ServiceReparation();
-        $reparation = $service->insertReparation($_POST['idWorkshop'], $_POST['nombreWorkshop'], $_POST['fechaRegistro'], $_POST['matricula']);
-        $view = new ViewReparation();
-        $view->render($reparation, "Vehiculo Insertado Correctamente");
+
+        try{
+            $reparation = $service->insertReparation($_POST['idWorkshop'], $_POST['nombreWorkshop'], $_POST['fechaRegistro'], $_POST['matricula']);
+            $view = new ViewReparation();
+            $view->render($reparation, "Vehiculo Insertado Correctamente");
+        }catch (Exception $e) {
+            echo $e->getMessage();
+        }
+
     }
 }

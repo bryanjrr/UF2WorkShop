@@ -61,6 +61,8 @@ class ServiceReparation
                 $log->info("Se ha realizado el SELECT Correctamente!");
             } catch (mysqli_sql_exception $e) {
                 $log->error("Error al realizar la consulta (SELECT) en la BBDD" . $e->getMessage());
+                throw new Exception("No se ha podido realizar el (SELECT) en la BBDD");
+
             }
             while ($row = $result->fetch_assoc()) {
 
@@ -105,7 +107,6 @@ class ServiceReparation
 
         $imageObject->resize(300, 300);
 
-        echo $uuid;
         $imageObject->text($uuid . $matricula, 120, 5, function ($imagen) {
             $imagen->color('#0838ea');
             $imagen->size(30);
@@ -123,8 +124,10 @@ class ServiceReparation
         try {
             $mysqli->query($sql_query);
             $log->info("Se ha realizado el INSERT Correctamente!");
+            
         } catch (mysqli_sql_exception $e) {
             $log->error("Error al realizar la consulta (INSERT) en la BBDD: " . $e->getMessage());
+            throw new Exception("No se ha podido realizar el (INSERT) en la BBDD");
         }
 
         $reparation = new Reparation($uuid, $idWorkshop, $nombre, $fechaRegistro, $matricula, $imageObject);
